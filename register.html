@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor Assistant - Patient Registration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --main-color: #0B8FAC;
+      --secondary-color: #E3F6F5;
+      --accent-color: #FFB703;
+      --text-color: #002D40;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #E3F6F5, #C8F4F9);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.15);
+      max-width: 520px;
+      width: 90%;
+      border-top: 10px solid var(--main-color);
+    }
+
+    .header-image {
+      width: 60%;
+      display: block;
+      margin: 0 auto 20px;
+    }
+
+    h2 {
+      color: var(--main-color);
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+    button {
+      background-color: var(--main-color);
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #06647d;
+    }
+
+    .thank-you-box {
+      display: none;
+      background: #e0fbf9;
+      padding: 25px;
+      border-radius: 16px;
+      text-align: center;
+      border: 2px solid var(--main-color);
+    }
+
+    .token-text {
+      font-size: 26px;
+      font-weight: bold;
+      color: var(--accent-color);
+      margin-bottom: 10px;
+    }
+
+    .info-line {
+      font-size: 16px;
+      color: var(--text-color);
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="formSection">
+    <img src="https://reply.io/wp-content/uploads/Virtual-AI-assistant-1024x538.png" alt="Assistant Image" class="header-image">
+    <h2>Patient Registration</h2>
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="number" id="age" placeholder="Age" required>
+    <select id="gender" required>
+      <option value="" disabled selected>Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+    <textarea id="address" placeholder="Address" required></textarea>
+    <input type="tel" id="whatsapp" placeholder="WhatsApp Number" required>
+    <button onclick="submitForm()">Submit</button>
+  </div>
+
+  <div class="container thank-you-box" id="thankYouBox">
+    <h2>Thank You for Registering!</h2>
+    <p class="token-text" id="tokenDisplay"></p>
+    <p class="info-line" id="nameDisplay"></p>
+    <p class="info-line" id="ageDisplay"></p>
+    <p class="info-line" id="genderDisplay"></p>
+    <p class="info-line" id="addressDisplay"></p>
+    <p class="info-line" id="whatsappDisplay"></p>
+    <p class="info-line" id="dateTimeDisplay"></p>
+  </div>
+
+  <script>
+    function submitForm() {
+      const name = document.getElementById("name").value.trim();
+      const age = document.getElementById("age").value.trim();
+      const gender = document.getElementById("gender").value;
+      const address = document.getElementById("address").value.trim();
+      const whatsapp = document.getElementById("whatsapp").value.trim();
+
+      if (!name || !age || !gender || !address || !whatsapp) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      let lastToken = localStorage.getItem("lastToken");
+      lastToken = lastToken ? parseInt(lastToken) : 0;
+      const newToken = lastToken + 1;
+      localStorage.setItem("lastToken", newToken);
+
+      const now = new Date();
+      const formattedDateTime = now.toLocaleString('en-IN', {
+        day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: true
+      });
+
+      document.getElementById("formSection").style.display = "none";
+      document.getElementById("thankYouBox").style.display = "block";
+
+      document.getElementById("tokenDisplay").textContent = "Your Token Number: " + newToken;
+      document.getElementById("nameDisplay").textContent = "Name: " + name;
+      document.getElementById("ageDisplay").textContent = "Age: " + age;
+      document.getElementById("genderDisplay").textContent = "Gender: " + gender;
+      document.getElementById("addressDisplay").textContent = "Address: " + address;
+      document.getElementById("whatsappDisplay").textContent = "WhatsApp No: " + whatsapp;
+      document.getElementById("dateTimeDisplay").textContent = "Submitted on: " + formattedDateTime;
+    }
+  </script>
+
+</body>
+</html>
